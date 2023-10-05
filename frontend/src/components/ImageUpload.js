@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const ImageUpload = ({ onAddImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -16,7 +17,7 @@ const ImageUpload = ({ onAddImage }) => {
       onAddImage(selectedImage);
       setSelectedImage(null);
     } else {
-      alert("Please select an image to upload.");
+      toast.error("Please select an image to upload.");
     }
   };
 

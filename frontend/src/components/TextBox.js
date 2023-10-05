@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const TextBox = ({ onAddText }) => {
   const [text, setText] = useState("");
@@ -8,12 +9,12 @@ const TextBox = ({ onAddText }) => {
 
   const handleAddText = () => {
     if (text.trim() === "") {
-      alert("Please enter some text.");
+      toast.error("Please enter some text.");
       return;
     }
-
     onAddText({ text, fontSize, textColor });
     setText("");
+    toast.success("Text Added")
   };
 
   return (
