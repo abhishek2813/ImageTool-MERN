@@ -4,6 +4,7 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const ImageSchema = require("./models/ImageSchema");
+const SavedImage = require("./models/SavedImage");
 const UserSchema = require("./models/UserSchema");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
@@ -19,37 +20,9 @@ const SALT_ROUND = Number(process.env.SALT_ROUND) || 5;
 const app = express();
 
 //Middleware
-app.use(cors("http://localhost:3000/"));
+app.use(cors(process.env.FRONTEND_URL));
 app.use(express.json());
 app.use(express.static("public"));
-
-// for image upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/Images");
-  },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-
-const uploadImg = multer({
-  storage: storage,
-});
-
-//Upload File
-app.post("/upload", uploadImg.single("file"), (req, res) => {
-  ImageSchema.create({ image: req.file.filename, userId: req.body.userId })
-    .then((data) =>
-      res.status(201).send({ status: 201, message: "Insert Success" })
-    )
-    .catch((err) =>
-      res.status(400).send({ error: "All fields are required ,err" })
-    );
-});
 
 //Signup
 app.post("/signup", async (req, resp) => {
@@ -134,6 +107,60 @@ app.post("/login", async (req, resp) => {
   }
 });
 
+// for image upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/Images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadImg = multer({
+  storage: storage,
+});
+
+//Upload File
+app.post("/upload", uploadImg.single("file"), (req, res) => {
+  ImageSchema.create({ image: req.file.filename, userId: req.body.userId })
+    .then((data) =>
+      res.status(201).send({ status: 201, message: "Insert Success" })
+    )
+    .catch((err) =>
+      res.status(400).send({ error: "All fields are required ,err" })
+    );
+});
+
+// for image save
+const savedStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/Images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const uploadSavedImg = multer({
+  storage: savedStorage,
+});
+
+//Saved Upload File
+app.post("/saved", uploadSavedImg.single("file"), (req, res) => {
+  SavedImage.create({ image: req.file.filename, userId: req.body.userId })
+    .then((data) => res.status(201).send({ status: 201, message: "Saved" }))
+    .catch((err) =>
+      res.status(400).send({ error: "All fields are required ,err" })
+    );
+});
+
 // Get the uploaded Images
 app.get("/upload/:userId", async (req, resp) => {
   const userId = req.params.userId;
@@ -149,6 +176,24 @@ app.get("/upload/:userId", async (req, resp) => {
     resp
       .status(500)
       .send({ error: "An error occurred while Fetching the images" });
+  }
+});
+
+//get saved image
+app.get("/saved/:userId", async (req, resp) => {
+  const userId = req.params.userId;
+  // console.log(userId);
+  try {
+    const result = await SavedImage.find({ userId });
+    resp.status(201).send({
+      status: 201,
+      message: "Images fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    resp
+      .status(500)
+      .send({ error: "An error occurred while Fetching the Saved images" });
   }
 });
 

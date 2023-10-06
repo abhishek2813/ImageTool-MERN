@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ImageSchema = new Schema({
+const savedSchema = new Schema({
   image: {
     type: String,
     required: true,
@@ -12,4 +12,4 @@ const ImageSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("images", ImageSchema);
+module.exports = mongoose.model("saved-images", savedSchema);
