@@ -5,12 +5,22 @@ import TextBox from "../TextBox";
 import ImageUpload from "../ImageUpload";
 import { uploadImg } from "../actions";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-    const [canvasObj, setCanvasObj] = useState([]);
+  const [canvasObj, setCanvasObj] = useState([]);
   const [stageDataURL, setStageDataURL] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
+  //check user exit or not
+  useEffect(() => {
+    const auth = JSON.parse(localStorage.getItem("user"));
+    if (!auth) {
+      navigate("/login");
+    }
+    setUser(auth);
+  }, [navigate]);
   const addText = ({ text, fontSize, textColor }) => {
     if (!text.trim()) {
       toast.error("Please enter some text.");
@@ -27,11 +37,10 @@ function Home() {
     setCanvasObj([...canvasObj, newText]);
   };
 
-  const addImage = async(uploadedImage) => {
+  const addImage = async (uploadedImage) => {
     const imageUrl = URL.createObjectURL(uploadedImage);
     const newImage = new window.Image();
     newImage.src = imageUrl;
-    const uploadFile = await uploadImg(uploadedImage)
     newImage.onload = () => {
       const imageToAdd = {
         x: 250,
@@ -43,13 +52,19 @@ function Home() {
       };
       setCanvasObj([...canvasObj, imageToAdd]);
     };
+    const uploadFile = await uploadImg(uploadedImage, user.id);
+    if (uploadFile.status === 201) {
+      toast.success(uploadFile.message);
+    } else {
+      toast.error(uploadFile.error);
+    }
   };
 
   const handleDownload = () => {
     if (stageDataURL) {
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = stageDataURL;
-      a.download = 'canvas_image.png';
+      a.download = "canvas_image.png";
       a.click();
       toast.success("Download.");
     }
@@ -60,7 +75,7 @@ function Home() {
   }, [canvasObj]);
   return (
     <div>
-        <Container>
+      <Container>
         <Row>
           <Col lg={6} md={12} sm={12} xs={12}>
             <div className="my-3 shadow p-3 mb-5 bg-white rounded">
@@ -75,8 +90,12 @@ function Home() {
                       <TextBox onAddText={addText} />
                     </div>
                   </Card.Text>
-                  <Button className="mx-3" variant="primary">Save</Button>
-                  <Button variant="success" onClick={handleDownload}>Download</Button>
+                  <Button className="mx-3" variant="primary">
+                    Save
+                  </Button>
+                  <Button variant="success" onClick={handleDownload}>
+                    Download
+                  </Button>
                 </Card.Body>
               </Card>
             </div>
@@ -87,7 +106,10 @@ function Home() {
                 <Card.Body>
                   <Card.Title>Preview</Card.Title>
                   <Card.Text>
-                    <Canvas canvasObj={canvasObj} onCanvasRender={(dataURL) => setStageDataURL(dataURL)} />
+                    <Canvas
+                      canvasObj={canvasObj}
+                      onCanvasRender={(dataURL) => setStageDataURL(dataURL)}
+                    />
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -96,7 +118,7 @@ function Home() {
         </Row>
       </Container>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

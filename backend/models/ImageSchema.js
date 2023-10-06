@@ -6,6 +6,10 @@ const ImageSchema = new Schema({
     type: "String",
     require: true,
   },
+  userId:{
+    type:String,
+    require:true,
+  }
 });
 
 module.exports= mongoose.model("images",ImageSchema);
