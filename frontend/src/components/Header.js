@@ -4,22 +4,24 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 function Header({ isLogin, setIsLogin }) {
   const navigate = useNavigate();
-  //handle Logout
+
+  // Handle Logout
   const handleLogout = () => {
     localStorage.removeItem("user");
     setIsLogin({});
     navigate("/login");
   };
+
   return (
     <Container fluid>
       <Row className="">
         <Navbar expand="lg" className="navbar-dark bg-dark">
-          <Col xs={7}>
+          <Col xs={6}>
             <Navbar.Brand href="#home" className="mx-2">
               Image Tool
             </Navbar.Brand>
           </Col>
-          <Col xs={5}>
+          <Col xs={6}>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
@@ -34,12 +36,12 @@ function Header({ isLogin, setIsLogin }) {
                     <NavLink to="/images" className="nav-link mx-2">
                       Saved Image
                     </NavLink>
-                    <div className="nav-link mx-2">
+                    <Nav.Link className="nav-link mx-2">
                       <p className="text-warning">Welcome {isLogin.name}</p>
-                    </div>
-                    <div className="nav-link mx-2">
+                    </Nav.Link>
+                    <Nav.Link className="nav-link mx-2">
                       <Button onClick={handleLogout}>Logout</Button>
-                    </div>
+                    </Nav.Link>
                   </>
                 ) : (
                   <>

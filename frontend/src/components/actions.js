@@ -62,7 +62,7 @@ const savedImg = async (file, userId) => {
 const uploadFetchImg = async (userId) => {
   try {
     const result = await axiox.get(`${url}/upload/${userId}`);
-    console.warn(result);
+    // console.warn(result);
     if (result.data.status === 201) {
       return result.data;
     }
@@ -74,7 +74,7 @@ const uploadFetchImg = async (userId) => {
 const savedFetchImg = async (userId) => {
   try {
     const result = await axiox.get(`${url}/saved/${userId}`);
-    console.warn("saved", result);
+    // console.warn("saved", result);
     if (result.data.status === 201) {
       return result.data;
     }
