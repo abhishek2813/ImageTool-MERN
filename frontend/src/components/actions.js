@@ -13,28 +13,44 @@ const signupUser = async (obj) => {
   }
 };
 
-//Handle Login 
-const loginUser = async(obj)=>{
-try {
-  const result = await axiox.post(`${url}/login`,obj);
-  console.warn(result);
-  if(result.data.status===201){
-    return result.data;
+//Handle Login
+const loginUser = async (obj) => {
+  try {
+    const result = await axiox.post(`${url}/login`, obj);
+    console.warn(result);
+    if (result.data.status === 201) {
+      return result.data;
+    }
+  } catch (error) {
+    return error.response.data;
   }
-} catch (error) {
-  return error.response.data;
-}
-}
+};
 
 //handle upload
-const uploadImg = async(file,userId) => {
+const uploadImg = async (file, userId) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("userId", userId);
   try {
-    const result= await axiox.post(`${url}/upload`, formData)
+    const result = await axiox.post(`${url}/upload`, formData);
     console.warn(result);
-    if(result.data.status===201){
+    if (result.data.status === 201) {
+      return result.data;
+    }
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+//handle upload
+const savedImg = async (file, userId) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("userId", userId);
+  try {
+    const result = await axiox.post(`${url}/saved`, formData);
+    console.warn(result);
+    if (result.data.status === 201) {
       return result.data;
     }
   } catch (error) {
@@ -43,16 +59,34 @@ const uploadImg = async(file,userId) => {
 };
 
 //handle upload image fetch
-const uploadFetchImg = async(userId)=>{
-try {
-  const result= await axiox.get(`${url}/upload/${userId}`)
+const uploadFetchImg = async (userId) => {
+  try {
+    const result = await axiox.get(`${url}/upload/${userId}`);
     console.warn(result);
-    if(result.data.status===201){
+    if (result.data.status === 201) {
       return result.data;
     }
-} catch (error) {
-  return error.response.data;
-}
-}
-
-export { uploadFetchImg,uploadImg, signupUser,loginUser };
+  } catch (error) {
+    return error.response.data;
+  }
+};
+//handle upload image fetch
+const savedFetchImg = async (userId) => {
+  try {
+    const result = await axiox.get(`${url}/saved/${userId}`);
+    console.warn("saved", result);
+    if (result.data.status === 201) {
+      return result.data;
+    }
+  } catch (error) {
+    return error.response.data;
+  }
+};
+export {
+  savedFetchImg,
+  savedImg,
+  uploadFetchImg,
+  uploadImg,
+  signupUser,
+  loginUser,
+};

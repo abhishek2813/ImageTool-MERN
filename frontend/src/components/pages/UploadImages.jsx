@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadFetchImg } from "../actions";
 import { toast } from "react-toastify";
 import { Col, Container, Row } from "react-bootstrap";
-import ImageCard from "./ImageCard";
+import ImageCard from "../ImageCard";
 
 function UploadImages() {
   const [images, setImages] = useState([]);
@@ -33,7 +33,7 @@ function UploadImages() {
             images.map((item) => (
               <Col xs={4} lg={4} key={item._id} className="mb-3">
                 <div className="shadow p-3 bg-white rounded">
-                <ImageCard data={item} />
+                  <ImageCard data={item} />
                 </div>
               </Col>
             ))}

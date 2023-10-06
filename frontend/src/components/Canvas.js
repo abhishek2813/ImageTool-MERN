@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
 import { Stage, Layer, Text, Image } from "react-konva";
 
-const Canvas = ({ canvasObj,onCanvasRender }) => {
-    const stageRef = useRef(null);
+const Canvas = ({ canvasObj, onCanvasRender }) => {
+  const stageRef = useRef(null);
   const handleDragEnd = (index, event) => {
     const updatedObjects = [...canvasObj];
     updatedObjects[index] = {

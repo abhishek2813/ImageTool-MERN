@@ -29,7 +29,7 @@ function Header({ isLogin, setIsLogin }) {
                       Home
                     </NavLink>
                     <NavLink to="/upload-images" className="nav-link mx-2">
-                    Upload Image
+                      Upload Image
                     </NavLink>
                     <NavLink to="/images" className="nav-link mx-2">
                       Saved Image

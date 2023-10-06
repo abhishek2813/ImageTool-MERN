@@ -22,19 +22,22 @@ const ImageUpload = ({ onAddImage }) => {
   };
 
   return (
-      <Container>
-        <Row>
-          <Col>
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
-            </Form.Group>
-          </Col>
+    <Container>
+      <Row>
         <Col>
-        <Button onClick={handleUploadImage}>Add Image</Button>
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </Form.Group>
         </Col>
-        </Row>
-      </Container>
-     
+        <Col>
+          <Button onClick={handleUploadImage}>Add Image</Button>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

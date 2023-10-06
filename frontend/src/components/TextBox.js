@@ -14,7 +14,7 @@ const TextBox = ({ onAddText }) => {
     }
     onAddText({ text, fontSize, textColor });
     setText("");
-    toast.success("Text Added")
+    toast.success("Text Added");
   };
 
   return (
